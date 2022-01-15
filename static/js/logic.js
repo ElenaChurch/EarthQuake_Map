@@ -69,34 +69,23 @@ async function main() {
         collapsed: false
     }).addTo(map); 
   
-  
-    // creating color key 
-    //https://gis.stackexchange.com/questions/133630/adding-leaflet-legend
-  function getColor(d) {
-    return d === '90'  ? 'red':
-           d === '70-90'  ? 'orange' :
-           d === '50-70' ? '#f5a451' :
-           d === '30-50' ? 'yellow' :
-           d== '10-30'?'lightgreen':
-           d== '-10-10' ? 'green':
-           'black';
- 
-    }
 
-    //https://www.youtube.com/watch?v=WXSIU05It4g&list=PLNCPalajQvg55_lI2bkO2mvESqxrTwyJJ&index=5
-
-    var legend = L.control({position: 'bottomright'})
-        legend.onAdd = function (map) {
-    var div = L.DomUtil.create('div', 'legend');    
-    var labels = ['90+','70-90','50-70','30-50','10-30','-10-10'];
-    var grades = [91,71,51,31,41,1];
+var legend= L.control({position: 'bottomright'});
+legend.onAdd=function(myMap){
+    var div=L.DomUtil.create('div','legend');
+    var labels = ['<strong>grades</strong>']
+    var grades = ['-10-10','10-30','30-50','50-70','70-90','90+'];
+    var colors =['green','lightgreen','yellow','light yellow', 'orange','red']
     div.innerHTML='<div><b>Legend</b></div';
-    for(var i = 0; i<grades.length; i++) {
-        div.innerHTML+='<i style="background:'
-        + getColor(grades[i]) + '>&nbsp;&nbsp;</i>&nbsp;&nbsp;' +labels[i]+'<br/>';
+    for(var i = 0; i<grades.length; i++){
+        labels.push(
+        div.innerHTML +=  "<i style='background:" + colors[i] + "'></i> " +
+        grades[i] + (grades[i + 1] ? ""  + "<br>" : ""));
+        labels.push(
+         div.innerHTML +=  "<i style='background:" + colors[i] + "'></i> " +
+        colors[i] + (colors[i + 1] ? ""  + "<br>" : ""))
     }
     return div;
-
 }
 legend.addTo(map)
 }
